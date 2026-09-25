@@ -1,0 +1,17 @@
+name: Build BoneVoice EXE
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install numpy sounddevice soundfile pyinstaller
+      - run: pyinstaller --noconfirm --clean --windowed --name BoneVoice --add-data "samples;samples" bone_voice.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BoneVoice-Windows
+          path: dist/BoneVoice/
